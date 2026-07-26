@@ -1,4 +1,4 @@
-# ClauseIQ: Multi-Agent, Multimodal Contract Risk Intelligence System
+ Multi-Agent, Multimodal Contract Risk Intelligence System
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![LangGraph](https://img.shields.io/badge/Orchestration-LangGraph%20%2F%20LangChain-green.svg)](https://github.com/langchain-ai/langgraph)
@@ -6,11 +6,11 @@
 [![pgvector](https://img.shields.io/badge/RAG%20Store-pgvector-blue.svg)](https://github.com/pgvector/pgvector)
 [![FastAPI](https://img.shields.io/badge/API-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
 
-**ClauseIQ** is an enterprise-grade, multi-agent, and genuinely multimodal legal contract risk intelligence platform. Unlike standard text-only contract review tools or generic wrapper chatbots, ClauseIQ combines **document vision-language models** (to inspect scanned pages, handwriting, redline annotations, and signatures), a **fine-tuned LoRA clause classifier** benchmarked on the published **CUAD** dataset, a **7-agent LangGraph orchestration pipeline**, **pgvector RAG** precedent matching, **LLMOps observability**, and **embedding drift monitoring**—served via a modern **Vanilla HTML/CSS/JS frontend**.
+This project is an enterprise-grade, multi-agent, and genuinely multimodal legal contract risk intelligence platform. Unlike standard text-only contract review tools or generic wrapper chatbots, ClauseIQ combines **document vision-language models** (to inspect scanned pages, handwriting, redline annotations, and signatures), a **fine-tuned LoRA clause classifier** benchmarked on the published **CUAD** dataset, a **7-agent LangGraph orchestration pipeline**, **pgvector RAG** precedent matching, **LLMOps observability**, and **embedding drift monitoring**—served via a modern **Vanilla HTML/CSS/JS frontend**.
 
 ---
 
-## Why ClauseIQ Stands Out
+## Why this project Stands Out
 
 1. **Genuine Multimodality Solving a Real Problem**:
    - Detecting missing initials in signature blocks or handwritten margin redlines that contradict typed clauses below them requires looking at the actual page image—layout, handwriting location, and visual structure—not just extracted OCR text.
