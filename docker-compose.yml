@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  pgvector:
+    image: pgvector/pgvector:pg16
+    container_name: clauseiq_pgvector
+    environment:
+      POSTGRES_USER: clauseiq
+      POSTGRES_PASSWORD: clauseiq_password
+      POSTGRES_DB: clauseiq_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgvector_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clauseiq -d clauseiq_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  phoenix:
+    image: arizephoenix/phoenix:latest
+    container_name: clauseiq_phoenix
+    ports:
+      - "6006:6006"
+      - "4317:4317"
+    environment:
+      - PHOENIX_PORT=6006
+
+volumes:
+  pgvector_data:

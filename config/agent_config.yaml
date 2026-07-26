@@ -1,0 +1,45 @@
+# ClauseIQ Agent System Prompts & Parameters
+
+agents:
+  vision_agent:
+    name: "Document-Vision Agent"
+    model: "LayoutLMv3-base"
+    temperature: 0.0
+    description: "Classifies scanned page types and localizes signature blocks, stamps, and handwritten redlines."
+
+  extraction_agent:
+    name: "Extraction Agent"
+    model: "default_reasoning_model"
+    temperature: 0.0
+    description: "Pulls clause text, parties, dates, and amounts grounded in vision layout coordinates."
+
+  classification_agent:
+    name: "Clause-Classification Agent"
+    model: "loRA-ModernBERT"
+    fallback_model: "default_reasoning_model"
+    temperature: 0.0
+    description: "Tags each clause into one of the 41 CUAD legal categories or falls back to zero-shot."
+
+  verification_agent:
+    name: "Execution-Verification Agent"
+    model: "default_reasoning_model"
+    temperature: 0.0
+    description: "Verifies signature blocks and initials using VQA and matches signatory names."
+
+  playbook_agent:
+    name: "Playbook-Comparison Agent"
+    model: "pgvector-retriever"
+    top_k: 3
+    description: "Retrieves precedent language from the playbook vector store and calculates semantic deviation."
+
+  risk_agent:
+    name: "Risk-Scoring Agent"
+    model: "default_reasoning_model"
+    temperature: 0.2
+    description: "Synthesizes semantic deviation severity, execution completeness, and clause criticality into a risk score."
+
+  critic_agent:
+    name: "Critic Agent"
+    model: "default_critic_model"
+    temperature: 0.0
+    description: "Checks that every flagged risk is grounded in retrieved playbook evidence and catches handwritten contradictions."

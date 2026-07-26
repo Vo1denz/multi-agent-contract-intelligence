@@ -1,0 +1,30 @@
+# Default Legal Playbook Rules & Criticality Weights
+
+rules:
+  - clause_type: "Limitation of Liability"
+    criticality: "HIGH"
+    max_cap_multiple: 2.0
+    prohibited_terms:
+      - "unlimited liability"
+      - "consequential damages included"
+    precedent_summary: "Liability must be capped at 1x to 2x total fees paid in the preceding 12 months."
+
+  - clause_type: "Indemnification"
+    criticality: "HIGH"
+    allowed_scopes:
+      - "third-party IP infringement"
+      - "gross negligence and willful misconduct"
+    precedent_summary: "Mutual indemnification limited to third-party intellectual property claims."
+
+  - clause_type: "Governing Law"
+    criticality: "MEDIUM"
+    preferred_jurisdictions:
+      - "Delaware"
+      - "New York"
+      - "California"
+    precedent_summary: "Must specify Delaware or New York jurisdiction."
+
+  - clause_type: "Termination for Convenience"
+    criticality: "MEDIUM"
+    notice_days: 30
+    precedent_summary: "Requires at least 30 days written notice for convenience termination."

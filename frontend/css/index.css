@@ -1,0 +1,67 @@
+/* Core Design Tokens & Glassmorphism Theme */
+
+:root {
+    /* Rich Dark Mode Color Palette (HSL Tailored) */
+    --bg-primary: hsl(222, 47%, 9%);
+    --bg-secondary: hsl(222, 47%, 13%);
+    --bg-card: hsla(222, 47%, 16%, 0.7);
+    --bg-glass: hsla(222, 47%, 18%, 0.55);
+    --border-color: hsla(220, 30%, 35%, 0.35);
+
+    /* Vibrant Accent & Risk Colors */
+    --accent-blue: hsl(215, 95%, 58%);
+    --accent-blue-hover: hsl(215, 95%, 65%);
+    --risk-high: hsl(355, 84%, 60%);
+    --risk-high-bg: hsla(355, 84%, 60%, 0.15);
+    --risk-med: hsl(38, 92%, 50%);
+    --risk-med-bg: hsla(38, 92%, 50%, 0.15);
+    --risk-low: hsl(152, 68%, 45%);
+    --risk-low-bg: hsla(152, 68%, 45%, 0.15);
+
+    /* Text & Typography */
+    --text-main: hsl(210, 40%, 98%);
+    --text-muted: hsl(215, 20%, 65%);
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: radial-gradient(circle at 15% 15%, hsla(215, 95%, 58%, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, hsla(355, 84%, 60%, 0.08) 0%, transparent 40%),
+                var(--bg-primary);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+}
+
+.glass-header {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}

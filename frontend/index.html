@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClauseIQ — Multimodal Contract Risk Intelligence</title>
+    <meta name="description" content="AI-powered multi-agent, multimodal contract risk intelligence platform combining document vision, LoRA fine-tuning, and pgvector RAG.">
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Custom Vanilla CSS -->
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <!-- Top Glass Navigation Bar -->
+    <header id="app-header" class="glass-header">
+        <div class="logo-area">
+            <div class="logo-badge">IQ</div>
+            <div class="logo-text">
+                <span class="brand-title">ClauseIQ</span>
+                <span class="brand-subtitle">Multi-Agent Multimodal Risk Platform</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="btn-sample-load" class="btn btn-secondary">Load Sample Contract</button>
+            <label for="file-upload" class="btn btn-primary glow">
+                Upload Scanned PDF / Image
+            </label>
+            <input type="file" id="file-upload" accept=".pdf,.png,.jpg,.jpeg" hidden>
+        </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main id="main-workspace" class="workspace-grid">
+        <!-- Left Sidebar: Document Pages & Execution Verification -->
+        <aside class="panel sidebar-panel glass-card">
+            <div class="panel-header">
+                <h2>Document Vision</h2>
+                <span class="badge badge-info">LayoutLMv3</span>
+            </div>
+            <div class="panel-content">
+                <div class="page-list-container">
+                    <h3>Page Breakdown</h3>
+                    <ul id="page-list" class="page-list">
+                        <li class="page-item active" data-page="1">
+                            <span class="page-number">Page 1</span>
+                            <span class="page-type badge badge-cover">Cover Page</span>
+                        </li>
+                        <li class="page-item" data-page="2">
+                            <span class="page-number">Page 2</span>
+                            <span class="page-type badge badge-body">Body / Clauses</span>
+                        </li>
+                        <li class="page-item" data-page="3">
+                            <span class="page-number">Page 3</span>
+                            <span class="page-type badge badge-signature">Signature Page</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="execution-status-card">
+                    <h3>Execution Completeness (VQA)</h3>
+                    <div id="vqa-status" class="status-indicator warning">
+                        <span class="status-icon">⚠️</span>
+                        <div class="status-text">
+                            <strong>Missing Margin Initial</strong>
+                            <p>Page 2 margin redline lacks signatory initials.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center: Interactive Scanned Document Canvas Viewer -->
+        <section class="panel viewer-panel glass-card">
+            <div class="panel-header">
+                <h2>Interactive Document & Redline Bounding Boxes</h2>
+                <div class="viewer-controls">
+                    <button id="btn-toggle-boxes" class="btn btn-icon active" title="Toggle Bounding Boxes">📐 BBoxes</button>
+                    <button id="btn-zoom-in" class="btn btn-icon" title="Zoom In">➕</button>
+                    <button id="btn-zoom-out" class="btn btn-icon" title="Zoom Out">➖</button>
+                </div>
+            </div>
+            <div class="canvas-container" id="canvas-wrapper">
+                <canvas id="document-canvas"></canvas>
+                <!-- Bounding boxes rendered dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- Right Sidebar: Clause Classifications & Redline Risk Scorecard -->
+        <aside class="panel scorecard-panel glass-card">
+            <div class="panel-header">
+                <h2>Risk Scorecard & Redlines</h2>
+                <span class="badge badge-high" id="overall-risk-badge">HIGH RISK (78/100)</span>
+            </div>
+            <div class="panel-content" id="report-content">
+                <!-- Clause List and Risk Items rendered dynamically -->
+                <div class="risk-summary-bar">
+                    <div class="risk-stat">
+                        <span class="stat-value">41</span>
+                        <span class="stat-label">CUAD Categories</span>
+                    </div>
+                    <div class="risk-stat">
+                        <span class="stat-value text-high">3</span>
+                        <span class="stat-label">High Risks</span>
+                    </div>
+                    <div class="risk-stat">
+                        <span class="stat-value text-warn">1</span>
+                        <span class="stat-label">Handwritten Contradiction</span>
+                    </div>
+                </div>
+
+                <div id="clause-list" class="clause-cards">
+                    <!-- Cards populated via app.js -->
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Vanilla JS Application Scripts -->
+    <script src="js/viewer.js"></script>
+    <script src="js/report.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
