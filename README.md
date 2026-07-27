@@ -1,14 +1,14 @@
  Multi-Agent, Multimodal Contract Risk Intelligence System
 
 
-This project is an enterprise-grade, multi-agent, and genuinely multimodal legal contract risk intelligence platform. Unlike standard text-only contract review tools or generic wrapper chatbots, ClauseIQ combines **document vision-language models** (to inspect scanned pages, handwriting, redline annotations, and signatures), a **fine-tuned LoRA clause classifier** benchmarked on the published **CUAD** dataset, a **7-agent LangGraph orchestration pipeline**, **pgvector RAG** precedent matching, **LLMOps observability**, and **embedding drift monitoring**—served via a modern **Vanilla HTML/CSS/JS frontend**.
+This project is an enterprise-grade, multi-agent, and genuinely multimodal legal contract risk intelligence platform. Unlike standard text-only contract review tools or generic wrapper chatbots, ClauseIQ combines **document vision-language models** (to inspect scanned pages, handwriting, redline annotations, and signatures), a **fine-tuned LoRA clause classifier** benchmarked on the published **CUAD** dataset, a **7-agent LangGraph orchestration pipeline**, **pgvector RAG** precedent matching, **LLMOps observability**, and **embedding drift monitoring** served via a modern **Vanilla HTML/CSS/JS frontend**.
 
 ---
 
 ## Why this project Stands Out
 
 1. **Genuine Multimodality Solving a Real Problem**:
-   - Detecting missing initials in signature blocks or handwritten margin redlines that contradict typed clauses below them requires looking at the actual page image—layout, handwriting location, and visual structure—not just extracted OCR text.
+   - Detecting missing initials in signature blocks or handwritten margin redlines that contradict typed clauses below them requires looking at the actual page image layout, handwriting location, and visual structure not just extracted OCR text.
 2. **Fine-Tuning vs. Prompting**:
    - Instead of sending every clause to an expensive LLM for basic classification, ClauseIQ fine-tunes a specialized LoRA adapter on **ModernBERT/DistilBERT** using the **CUAD (Contract Understanding Atticus Dataset)** benchmark (510 contracts, 13,000+ expert annotations, 41 clause categories).
 3. **Multi-Agent Orchestration**:
