@@ -1,18 +1,42 @@
-"""7. Critic Agent: Verifies risk grounding and checks handwritten redline contradictions."""
+from __future__ import annotations
+from typing import Any
+from src.ops.logger import get_logger
+from src.agents.state import ContractAnalysisState
 
-from typing import Dict, Any
-from .state import ContractAnalysisState
+logger = get_logger(__name__)
 
-
-def critic_agent(state: ContractAnalysisState) -> Dict[str, Any]:
-    """Audits flagged risks against playbook evidence and reconciles margin note contradictions."""
-    all_grounded = True
-    for clause in state.clauses:
-        # Check if clause risk is backed by retrieved playbook text
-        if clause.risk_level == "HIGH" and not clause.precedent_text:
-            clause.is_grounded = False
-            all_grounded = False
-
-    state.critic_verified = all_grounded
-    state.audit_trail.append("Critic Agent verified RAG grounding and margin contradictions.")
-    return state.model_dump()
+def critic_agent(state: ContractAnalysisState) -> dict[str, Any]:
+    audit_msgs = ["Critic agent started."]
+    errors = []
+    clauses = state.get("clauses", [])
+    critic_notes = []
+    verified = True
+    
+    try:
+        for clause in clauses:
+            if clause.get("risk_level") in ["HIGH", "CRITICAL"]:
+                if not clause.get("precedent_text"):
+                    clause["is_grounded"] = False
+                    verified = False
+                    critic_notes.append(f"Ungrounded risk in clause category {clause.get('category')}.")
+                else:
+                    clause["is_grounded"] = True
+                    
+        contradictions = state.get("handwritten_contradictions", [])
+        for c in contradictions:
+            critic_notes.append(f"Verified contradiction on page {c.get('page_number')}.")
+            
+        audit_msgs.append(f"Critic checks complete. Grounded: {verified}.")
+    except Exception as e:
+        logger.error(f"Critic agent error: {e}")
+        errors.append(f"Critic error: {e}")
+        audit_msgs.append("Critic agent failed.")
+        verified = False
+        
+    return {
+        "clauses": clauses,
+        "critic_verified": verified,
+        "critic_notes": critic_notes,
+        "audit_trail": audit_msgs,
+        "errors": errors
+    }

@@ -1,14 +1,35 @@
-"""LLMOps tracing hooks for Langfuse and Arize Phoenix."""
+from __future__ import annotations
+import functools
+from typing import Optional, Any
+from config.settings import settings
 
-from typing import Any, Dict
+try:
+    from langfuse.callback import CallbackHandler
+    from langfuse.decorators import observe
+    HAS_LANGFUSE = True
+except ImportError:
+    HAS_LANGFUSE = False
 
+def get_langfuse_handler() -> Optional[Any]:
+    if HAS_LANGFUSE and settings.langfuse_public_key and settings.langfuse_secret_key:
+        return CallbackHandler(
+            public_key=settings.langfuse_public_key,
+            secret_key=settings.langfuse_secret_key,
+            host=settings.langfuse_host
+        )
+    return None
 
-class TracingClient:
-    """Provides unified observability tracing for LangGraph agent executions."""
-
-    def __init__(self, service_name: str = "ClauseIQ"):
-        self.service_name = service_name
-
-    def log_agent_step(self, agent_name: str, input_data: Dict[str, Any], output_data: Dict[str, Any]) -> None:
-        """Record input, output, latency, and token cost for an agent step."""
-        pass
+def traced_agent(name: str):
+    def decorator(func):
+        if HAS_LANGFUSE:
+            @observe(name=name)
+            @functools.wraps(func)
+            def wrapper(*args, **kwargs):
+                return func(*args, **kwargs)
+            return wrapper
+        else:
+            @functools.wraps(func)
+            def wrapper(*args, **kwargs):
+                return func(*args, **kwargs)
+            return wrapper
+    return decorator

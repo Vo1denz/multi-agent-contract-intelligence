@@ -1,18 +1,61 @@
-"""4. Execution-Verification Agent: Visual QA for incomplete signatures or initials."""
+from __future__ import annotations
+from typing import Any
+from src.ops.logger import get_logger
+from src.agents.state import ContractAnalysisState, VQAIssue
 
-from typing import Dict, Any
-from .state import ContractAnalysisState
-from ..vision.vqa import ExecutionVQA
+logger = get_logger(__name__)
 
-
-def execution_verification_agent(state: ContractAnalysisState) -> Dict[str, Any]:
-    """Runs VQA on signature blocks and margin redlines to check execution completeness."""
-    vqa = ExecutionVQA()
-    check = vqa.verify_execution(state.file_path, "Are all signature blocks and margins signed?")
-
-    if check.get("answer") == "NO_INITIAL":
-        state.execution_complete = False
-        state.vqa_issues.append("Missing initials on margin redline at coordinates [440, 160, 110, 32].")
-
-    state.audit_trail.append("Execution-Verification Agent completed VQA signature check.")
-    return state.model_dump()
+def verification_agent(state: ContractAnalysisState) -> dict[str, Any]:
+    audit_msgs = ["Verification agent started."]
+    errors = []
+    vqa_issues = []
+    execution_complete = True
+    
+    try:
+        from src.vision.vqa import ExecutionVQA
+        vqa = ExecutionVQA()
+        
+        pages = state.get("pages", [])
+        sig_pages = [p for p in pages if p.get("page_type") == "SIGNATURE"]
+        
+        if not sig_pages:
+            audit_msgs.append("No signature pages found. Assuming incomplete execution.")
+            execution_complete = False
+        else:
+            questions = [
+                "Is this signature block signed?",
+                "Is there a date next to the signature?",
+                "Are there initials in the margin?"
+            ]
+            
+            for p in sig_pages:
+                image_path = p.get("image_path")
+                page_num = p.get("page_number", 0)
+                
+                for q in questions:
+                    res = vqa.verify_execution(image_path, p.get("text", ""), q)
+                    if not res.is_complete:
+                        execution_complete = False
+                        issue = VQAIssue(
+                            page_number=page_num,
+                            question=q,
+                            answer=res.answer,
+                            confidence=res.confidence,
+                            is_complete=res.is_complete,
+                            evidence_bbox=res.evidence_bbox
+                        )
+                        vqa_issues.append(issue.to_dict())
+                        
+        audit_msgs.append(f"Execution verification complete. Status: {execution_complete}.")
+    except Exception as e:
+        logger.error(f"Verification agent error: {e}")
+        errors.append(f"Verification agent error: {e}")
+        audit_msgs.append("Verification agent failed.")
+        execution_complete = False
+        
+    return {
+        "execution_complete": execution_complete,
+        "vqa_issues": vqa_issues,
+        "audit_trail": audit_msgs,
+        "errors": errors
+    }

@@ -1,106 +1,137 @@
-/* Layout & Grid Styling */
+/* Layout System */
 
-#app-header {
+/* Header */
+.app-header {
+    height: 64px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 2rem;
-    height: 72px;
+    padding: 0 var(--space-4);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
 }
 
-.logo-area {
+.brand {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-2);
 }
 
-.logo-badge {
-    background: linear-gradient(135deg, var(--accent-blue), #6366f1);
-    color: white;
-    font-family: var(--font-heading);
-    font-weight: 700;
+.logo {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, hsl(var(--accent-blue)), hsl(var(--risk-critical)));
+    border-radius: 4px;
+}
+
+.brand h1 {
     font-size: 1.25rem;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
-}
-
-.logo-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.brand-title {
-    font-family: var(--font-heading);
-    font-size: 1.35rem;
-    font-weight: 700;
-    background: linear-gradient(90deg, #fff, #93c5fd);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.brand-subtitle {
-    font-size: 0.75rem;
-    color: var(--text-muted);
+    letter-spacing: -0.5px;
 }
 
 .header-actions {
     display: flex;
-    gap: 0.75rem;
     align-items: center;
+    gap: var(--space-3);
 }
 
-/* Workspace 3-Column Layout */
-.workspace-grid {
-    display: grid;
+/* Workspace */
+.workspace {
+    height: calc(100vh - 64px);
+    padding: var(--space-3);
+    position: relative;
+}
+
+/* States */
+.empty-state, .error-state, .analysis-state {
+    display: none;
+    height: 100%;
+}
+.empty-state.active, .error-state.active, .analysis-state.active {
+    display: flex;
+}
+
+.empty-state, .error-state {
+    align-items: center;
+    justify-content: center;
+}
+
+/* 3-Column Grid */
+.analysis-state {
     grid-template-columns: 320px 1fr 380px;
-    gap: 1.25rem;
-    padding: 1.25rem 2rem;
-    height: calc(100vh - 72px);
+    gap: var(--space-3);
+    height: 100%;
+}
+@media (max-width: 1200px) {
+    .analysis-state {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        overflow-y: auto;
+    }
 }
 
-.panel {
+/* Sidebars */
+.sidebar-left, .sidebar-right {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: var(--space-3);
+    gap: var(--space-4);
+}
+
+.panel-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+.panel-section h3 {
+    font-size: 0.9rem;
+    color: hsl(var(--text-muted));
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--space-1);
+}
+
+/* Center Canvas */
+.center-canvas {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
 }
-
-.panel-header {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
+.canvas-toolbar {
+    height: 48px;
+    border-bottom: 1px solid var(--glass-border);
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-3);
+    background: hsla(var(--bg-dark), 0.5);
 }
-
-.panel-content {
-    padding: 1.5rem;
-    overflow-y: auto;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-/* Viewer Panel */
 .canvas-container {
     flex: 1;
-    background: rgba(0, 0, 0, 0.25);
+    overflow: auto;
+    position: relative;
+    background: hsl(var(--bg-darker));
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    overflow: auto;
-    padding: 1rem;
 }
-
-#document-canvas {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 8px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+#doc-canvas {
+    max-width: none;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+.canvas-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: hsla(var(--bg-darker), 0.8);
+    z-index: 10;
 }
